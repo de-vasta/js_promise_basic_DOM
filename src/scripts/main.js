@@ -9,7 +9,9 @@ const promise1 = new Promise((resolve, reject) => {
 });
 
 const promise2 = new Promise((resolve, reject) => {
-  reject(new Error('Promise was rejected!'));
+  setTimeout(() => {
+    reject(new Error('Promise was rejected!'));
+  }, 3e3);
 });
 
 promise1.then(({ logo, message }) => {
@@ -18,16 +20,14 @@ promise1.then(({ logo, message }) => {
     innerText: message,
   });
 
-  logo.after(divSucceed);
+  document.body.append(divSucceed);
 });
 
-setTimeout(() => {
-  promise2.catch((reason) => {
-    const divFail = document.createElement('div');
+promise2.catch((reason) => {
+  const divFail = document.createElement('div');
 
-    divFail.className = 'message error-message';
-    divFail.innerText = reason.message;
+  divFail.className = 'message error-message';
+  divFail.innerText = reason.message;
 
-    document.body.append(divFail);
-  });
-}, 3000);
+  document.body.append(divFail);
+});
